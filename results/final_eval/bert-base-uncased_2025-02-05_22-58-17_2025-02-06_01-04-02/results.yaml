@@ -1,0 +1,59 @@
+classification:
+  attention_dim: 128
+  classification_layer_count: 2
+  classifier_size: 768
+  custom: true
+  dataset_path: data/track_a/train/eng.csv
+  dropout_rate: 0.1
+  extended_dataset: true
+  extended_split: 1.0
+  freeze_layers: false
+  freeze_to_layer: 12
+  head_type: fc
+  loRa: false
+  num_attention_heads: 1
+  training:
+    learning_rate: 2.0e-05
+    per_device_eval_batch_size: 32
+    per_device_train_batch_size: 32
+    train_epochs: 30
+    warmup_steps: 500
+    weight_decay: 0.01
+  training_set_split: 0.8
+pretraining:
+  dataset_path: data/track_a/train/eng.csv
+  extended_dataset: true
+  extended_split: 1.0
+  model_to_pretrain: bert-base-uncased
+  results:
+    epoch: 50.0
+    eval_loss: 2.6567513942718506
+    eval_runtime: 1.3461
+    eval_samples_per_second: 411.553
+    eval_steps_per_second: 52.001
+  training:
+    learning_rate: 2.0e-05
+    train_epochs: 50
+    weight_decay: 0.01
+  training_set_split: 0.8
+results:
+  dev:
+    epoch: 30.0
+    eval_accuracy: 0.4375
+    eval_f1: 0.7062867848330254
+    eval_loss: 0.4572352468967438
+    eval_precision: 0.7167913014754024
+    eval_recall: 0.7114093959731543
+    eval_runtime: 0.7075
+    eval_samples_per_second: 163.969
+    eval_steps_per_second: 5.654
+  eval:
+    epoch: 30.0
+    eval_accuracy: 0.45588235294117646
+    eval_f1: 0.747812253575928
+    eval_loss: 0.4158499240875244
+    eval_precision: 0.7341763267882511
+    eval_recall: 0.7673860911270983
+    eval_runtime: 4.0127
+    eval_samples_per_second: 138.061
+    eval_steps_per_second: 4.486
