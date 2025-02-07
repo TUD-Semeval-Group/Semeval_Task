@@ -1,0 +1,44 @@
+classification:
+  attention_dim: 128
+  classification_layer_count: 2
+  classifier_size: 1536
+  custom: true
+  dataset_path: data/track_a/train/eng.csv
+  dropout_rate: 0.1
+  extended_dataset: true
+  extended_split: 1.0
+  freeze_layers: false
+  freeze_to_layer: 12
+  head_type: fc
+  loRa: false
+  num_attention_heads: 1
+  pretrained_model: roberta-large
+  training:
+    learning_rate: 2.0e-05
+    per_device_eval_batch_size: 32
+    per_device_train_batch_size: 32
+    train_epochs: 30
+    warmup_steps: 500
+    weight_decay: 0.01
+  training_set_split: 0.8
+results:
+  dev:
+    epoch: 30.0
+    eval_accuracy: 0.3229166666666667
+    eval_f1: 0.69178264453079
+    eval_loss: 1.2197855710983276
+    eval_precision: 0.6831577306779218
+    eval_recall: 0.7046979865771812
+    eval_runtime: 2.0919
+    eval_samples_per_second: 55.452
+    eval_steps_per_second: 1.912
+  eval:
+    epoch: 30.0
+    eval_accuracy: 0.49264705882352944
+    eval_f1: 0.7805598900287811
+    eval_loss: 1.003620982170105
+    eval_precision: 0.7521439249889029
+    eval_recall: 0.8117505995203836
+    eval_runtime: 11.8381
+    eval_samples_per_second: 46.798
+    eval_steps_per_second: 1.521
