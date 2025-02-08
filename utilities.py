@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 import torch
 from torch import nn
 
+from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from transformers import AutoTokenizer, AutoModelForMaskedLM
 from transformers import RobertaModel, RobertaTokenizer, TrainingArguments, Trainer, RobertaConfig
@@ -11,6 +12,7 @@ from transformers import RobertaModel, RobertaTokenizer, TrainingArguments, Trai
 import os
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 import re
 import numpy as np 
@@ -25,6 +27,39 @@ elif torch.cuda.is_available():
 else:
     device = torch.device('cpu')
 
+def show_tensorBoard_data(log_dir_list = ["./logs/pretraining/roberta-base_2025-01-29_13-50-06", "./logs/pretraining/roberta-base_2025-01-29_10-39-30"], 
+                            plot_name_list = ["RoBERTa-base", "RoBERTa-large"],  
+                            metric = "loss",
+                            mode="eval", 
+                            title = "Pretraining loss",
+                            font = "Times New Roman", 
+                            line_styles = ["-", "--", "-.", ":"]):
+
+    for i, log_dir in enumerate(log_dir_list):
+        event_accumulator = EventAccumulator(log_dir)
+        event_accumulator.Reload()
+
+        events = event_accumulator.Scalars(f"{mode}/{metric.lower()}")
+        
+        x = [x.step for x in events]
+        y = [x.value for x in events]
+
+        df = pd.DataFrame({"step": x, metric: y})
+
+        plt.plot(df["step"].values[:-1], df[metric].values[:-1], label = plot_name_list[i], linestyle = line_styles[i])
+
+    # change the font style and size of the legend 
+    mpl.rc('font', family = font)
+    font_size = 15
+
+    plt.xlabel("Steps", fontname = font, fontsize = font_size)
+    plt.ylabel(metric, fontname = font, fontsize = font_size)
+    plt.title(title, fontname = font, fontsize = font_size)
+    plt.legend()
+    plt.grid()
+    plt.show()
+
+    return 
 
 def load_and_split_dataset(dataset_path, split_ratio=0.8):
     dataset = pd.read_csv(dataset_path)
@@ -369,3 +404,13 @@ def plot_confusion_matrix(predictions, save_path = None, file_name = None, show 
     if show: 
         plt.show()
     
+if __name__ == "__main__": 
+
+    show_tensorBoard_data(log_dir_list = ["./results/final_eval/pretraining_logs/bert-base-uncased_pre_fine",
+                                          "./results/final_eval/pretraining_logs/bert-large-uncased_pre_fine",
+                                          "./results/final_eval/pretraining_logs/roberta-base_pre_fine",
+                                          "./results/final_eval/pretraining_logs/roberta-large_pre_fine"],
+                            plot_name_list = ["BERT-base-uncased", "BERT-large", "RoBERTa-base", "RoBERTa-large"],
+                            mode = "eval", 
+                            metric = "Loss",
+                            title = "Evaluation Loss")

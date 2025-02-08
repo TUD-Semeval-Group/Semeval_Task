@@ -37,6 +37,6 @@ def evaluate_classification(ground_truth_file, classified_file):
     return accuracy, f1
 
 # Example usage
-accuracy, f1 = evaluate_classification('data/track_a/dev/eng.csv', 'classified_dev_set_julius.csv')
+accuracy, f1 = evaluate_classification('data/track_a/dev/eng.csv', 'human_classification_robert.csv')
 print(f"Accuracy: {accuracy:.2%}")
 print(f"F1 Score: {f1:.4f}")
