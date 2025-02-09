@@ -33,7 +33,13 @@ def show_tensorBoard_data(log_dir_list = ["./logs/pretraining/roberta-base_2025-
                             mode="eval", 
                             title = "Pretraining loss",
                             font = "Times New Roman", 
-                            line_styles = ["-", "--", "-.", ":"]):
+                            line_styles = ["-", "--", "-.", ":"],
+                            line_width = 6,
+                            axis_width = 3,
+                            font_size = 40,
+                            legend_size = 35):
+    
+    fig, ax = plt.subplots()
 
     for i, log_dir in enumerate(log_dir_list):
         event_accumulator = EventAccumulator(log_dir)
@@ -46,16 +52,27 @@ def show_tensorBoard_data(log_dir_list = ["./logs/pretraining/roberta-base_2025-
 
         df = pd.DataFrame({"step": x, metric: y})
 
-        plt.plot(df["step"].values[:-1], df[metric].values[:-1], label = plot_name_list[i], linestyle = line_styles[i])
+        ax.plot(df["step"].values[:-1], df[metric].values[:-1], label = plot_name_list[i], linestyle = line_styles[i], linewidth = line_width)
+
 
     # change the font style and size of the legend 
     mpl.rc('font', family = font)
-    font_size = 15
+    
+
+    # change axe thickness 
+    # change all spines
+    for axis in ['top','bottom','left','right']:
+        ax.spines[axis].set_linewidth(axis_width)
+
+    # increase tick width
+    ax.tick_params(width=axis_width)
 
     plt.xlabel("Steps", fontname = font, fontsize = font_size)
     plt.ylabel(metric, fontname = font, fontsize = font_size)
+    plt.xticks(fontsize = font_size / 2)
+    plt.yticks(fontsize = font_size / 2)
     plt.title(title, fontname = font, fontsize = font_size)
-    plt.legend()
+    plt.legend(prop={"size" : legend_size})
     plt.grid()
     plt.show()
 
@@ -413,4 +430,4 @@ if __name__ == "__main__":
                             plot_name_list = ["BERT-base-uncased", "BERT-large", "RoBERTa-base", "RoBERTa-large"],
                             mode = "eval", 
                             metric = "Loss",
-                            title = "Evaluation Loss")
+                            title = "Evaluation F1 Score")
