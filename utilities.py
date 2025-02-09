@@ -35,9 +35,11 @@ def show_tensorBoard_data(log_dir_list = ["./logs/pretraining/roberta-base_2025-
                             font = "Times New Roman", 
                             line_styles = ["-", "--", "-.", ":"],
                             line_width = 6,
-                            axis_width = 3,
-                            font_size = 40,
-                            legend_size = 35):
+                            axis_width = 2,
+                            title_font_size = 40,
+                            ticks_font_size = 20,
+                            axis_label_font_size = 30, 
+                            legend_size = 25):
     
     fig, ax = plt.subplots()
 
@@ -67,13 +69,14 @@ def show_tensorBoard_data(log_dir_list = ["./logs/pretraining/roberta-base_2025-
     # increase tick width
     ax.tick_params(width=axis_width)
 
-    plt.xlabel("Steps", fontname = font, fontsize = font_size)
-    plt.ylabel(metric, fontname = font, fontsize = font_size)
-    plt.xticks(fontsize = font_size / 2)
-    plt.yticks(fontsize = font_size / 2)
-    plt.title(title, fontname = font, fontsize = font_size)
+    plt.xlabel("Steps", fontname = font, fontsize = axis_label_font_size)
+    plt.ylabel(metric, fontname = font, fontsize = axis_label_font_size)
+    plt.xticks(fontsize = ticks_font_size, fontname = font)
+    plt.yticks(fontsize = ticks_font_size, fontname = font)
+    plt.ylim(top = 3)
+    plt.title(title, fontname = font, fontsize = title_font_size)
     plt.legend(prop={"size" : legend_size})
-    plt.grid()
+    plt.grid(linewidth = axis_width)
     plt.show()
 
     return 
@@ -428,6 +431,6 @@ if __name__ == "__main__":
                                           "./results/final_eval/pretraining_logs/roberta-base_pre_fine",
                                           "./results/final_eval/pretraining_logs/roberta-large_pre_fine"],
                             plot_name_list = ["BERT-base-uncased", "BERT-large", "RoBERTa-base", "RoBERTa-large"],
-                            mode = "eval", 
+                            mode = "train", 
                             metric = "Loss",
-                            title = "Evaluation F1 Score")
+                            title = "Trainings Loss")
